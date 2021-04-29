@@ -1,0 +1,116 @@
+<form [formGroup]="_fb" (ngSubmit)="onSearch()">
+    <div class="container">
+        <h1 class="mt-4">Invoices OSE</h1>
+        <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
+            larger
+            screens. When toggled using the button below, the menu will change.</p>
+        <!-- <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and
+      just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when
+      clicked.</p> -->
+        <!-- <div>
+            <p>valido: {{_fb.valid}}</p>
+            <p>Dirty: {{_fb.dirty}}</p>
+            <p>Untouched: {{_fb.untouched}}</p>
+            <p>{{_fb.value |json}}</p>
+        </div> -->
+        <div class="row">
+            <!-- <router-outlet></router-outlet> -->
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <!-- <label for="inputState">Fecha Emision</label> -->
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">From</div>
+                        </div>
+                        <input class="form-control" placeholder="dd/mm/yyyy" name="dp1" [(ngModel)]="dateFrom"
+                            ngbDatepicker #d0="ngbDatepicker" formControlName="dateFrom">
+                        <div class="input-group-append">
+                            <button class="bi-calendar3" (click)="d0.toggle()" type="button"></button>
+                        </div>
+                    </div>
+                    <small *ngIf="!_fb.controls.dateFrom.valid && !_fb.controls.dateFrom.untouched" class="text-sm-left">Ingrese la fecha de inicio</small>
+                    <!-- <div>
+                        <p>Valid : {{_fb.controls.dateFrom.valid}}</p>
+                        <p>untouched : {{_fb.controls.dateFrom.untouched}}</p>
+                    </div> -->
+                </div>  
+                <div class="col-auto">
+                    <!-- <label class="sr-only" for="inlineFormInputGroup">Username</label> -->
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">To</div>
+                        </div>
+                        <input class="form-control" placeholder="dd/mm/yyyy" name="dp2" [(ngModel)]="dateTo"
+                            ngbDatepicker #d1="ngbDatepicker" formControlName="dateTo">
+                        <div class="input-group-append">
+                            <button class="bi-calendar3" (click)="d1.toggle()" type="button"></button>
+                        </div>
+                    </div>
+                    <small *ngIf="!_fb.controls.dateTo.valid && !_fb.controls.dateTo.untouched" class="text-sm-left">Ingrese la fecha fin</small>
+                </div>
+                <div class="col-auto">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" formControlName="sendOse" type="checkbox" id="autoSizingCheck">
+                        <label class="form-check-label" for="autoSizingCheck">
+                            Envia OSE
+                        </label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+                </div>
+            </div>
+            <div class="col text-right">
+                <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Options</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                        <button ngbDropdownItem (click)="exportAsXLSX()"> Export Excel</button> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>OSE</th>
+                <th>RUC</th>
+                <th>Organization Nane</th>
+                <th>Cpes Ok</th>
+                <th>Cpes Error</th>
+                <th>Cpes Total</th>
+                <!-- <th>Options</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of arrInvoice ">
+                <td>
+                    <div *ngIf="item.oseEnabled">
+                        <i class="bi-cloud-arrow-up-fill" role="img" aria-label="GitHub"></i>
+                    </div>
+                </td>
+                <td>{{item.organizarionId}}</td>
+                <td>{{item.organizationName}}</td>
+                <td> <div class="text-right">{{item.cpesStatusOk| number}}</div> </td>
+                <td><div class="text-right">{{item.cpesStatusError| number }}</div></td>
+                <td><div class="text-right">{{item.cpesTotal | number}}</div></td>
+                <!-- <td class="overflow-hidden">
+                    <div ngbDropdown container="body">
+                        <button class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+                        <div ngbDropdownMenu>
+                            <button ngbDropdownItem>Edit</button>
+                            <button ngbDropdownItem>Duplicate</button>
+                            <button ngbDropdownItem>Move</button>
+                            <div class="dropdown-divider"></div>
+                            <button ngbDropdownItem>Delete</button>
+                        </div>
+                    </div>
+                </td> -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="totalCount" [maxSize]="5"
+    (pageChange)="pageChange()" class="d-flex justify-content-end" [boundaryLinks]="true"></ngb-pagination> -->

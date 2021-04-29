@@ -1,0 +1,267 @@
+<div>
+    <h1 class="mt-4">Create Invoice</h1>
+    <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger
+        screens. When toggled using the button below, the menu will change.</p>
+    <!-- <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and
+    just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when
+    clicked.</p> -->
+</div>
+<form [formGroup]="userTable">
+    <div class="container">
+        <div class="row grid-divider">
+            <div class="col-sm-10">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="tipoComprobante">Tipo Comprobante</label>
+                        <select id="tipoComprobante" class="form-control" name="tipoComprobante"
+                            formControlName="tipoComprobante">
+                            <option selected>Choose...</option>
+                            <option>Factura</option>
+                            <option>Boleta</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState">Serie - Numero</label>
+                        <div class="input-group">
+                            <input type="text" style="width: 40%;" placeholder="F001" formControlName="serieInvoice"
+                                name="serieInvoice" class="form-control" required
+                                aria-label="Text input with dropdown button">
+                            <input type="text" style="width: 60%;" placeholder="00000001"
+                                formControlName="numeroInvoice" name="numeroInvoice" class="form-control" required
+                                aria-label="Text input with dropdown button">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputState">Fecha Emision</label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="dd/mm/yyyy" name="dp" [(ngModel)]="model"
+                                ngbDatepicker #d="ngbDatepicker" formControlName="dateInvoice">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                                    type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="inputState">Tipo Documento</label>
+                        <select id="inputState" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>Factura</option>
+                            <option>Boleta</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="exampleInputEmail1">Nro Documento</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Nro documento">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="exampleInputEmail1">Razon Social</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Razon Social - nombres">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                </div>
+                <!-- <div class="col-padding">
+                    <h3>Column 1</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima expedita incidunt rerum.</p>
+                </div> -->
+            </div>
+            <div class="col-sm-2">
+                <div class="col-padding">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <small class="form-check-label" for="gridCheck">
+                                Soles
+                            </small>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <small class="form-check-label" for="gridCheck">
+                                Enviar Sunat
+                            </small>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <small class="form-check-label" for="gridCheck">
+                                Enviar Cliente
+                            </small>
+                        </div>
+                        <!-- <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <label class="form-check-label" for="gridCheck">
+                                Check me out
+                            </label>
+                        </div> -->
+
+                    </div>
+                </div>
+                <!-- <div class="col-padding">
+                    <h3>Column 3</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab veniam aperiam numquam cupiditate
+                        maiores repudiandae ea dicta, sunt rerum corporis. Ab veniam aperiam numquam cupiditate maiores
+                        repudiandae ea dicta, sunt rerum corporis. Ab veniam aperiam numquam cupiditate maiores
+                        repudiandae ea dicta.</p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary btn-sm pull-left" (click)="addNewRow()">Add Row</button>
+        <!-- <button type="button" class="btn btn-success btn-sm pull-right" title="Save">Save</button>   -->
+    </div>
+    <table class="table table-border" [ngClass]="{'table-dark': mode}">
+        <thead class="text-nowrap">
+            <th>Cantidad</th>
+            <th>Descripcion de producto o servicio</th>
+            <th>Tipo de IGV</th>
+            <th>Precio U.</th>
+            <th>Total</th>
+            <th>Accion</th>
+        </thead>
+        <tbody>
+            <ng-container formArrayName="tableRows" *ngFor="let group of getFormControls.controls ; let i=index">
+                <tr *ngIf="group.get('isEditable').value" [formGroupName]="i">
+                    <td>
+                        <input type="number" class="form-control form-control-sm" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Cantidad">
+                        <!-- <mat-form-field>
+                  <input matInput type="text" formControlName="name">
+                </mat-form-field> -->
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Descripcion">
+                        <!-- <mat-form-field>
+                  <input matInput type="tetx" formControlName="email">
+                </mat-form-field> -->
+                    </td>
+
+                    <td>
+                        <!-- <input type="email" class="form-control form-control-sm" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Nro documento"> -->
+                        <select id="inputState" class="form-control form-control-sm">
+                            <option selected>Choose...</option>
+                            <option>Factura</option>
+                            <option>Boleta</option>
+                        </select>
+                        <!-- <mat-form-field>
+                  <mat-select formControlName="bloodGroup">
+                    <mat-option value="O+">O</mat-option>
+                    <mat-option value="A">A</mat-option>
+                    <mat-option value="B">B</mat-option>
+                    <mat-option value="AB">AB</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Precio">
+                        <!-- <mat-form-field>
+                  <input matInput matInput [matDatepicker]="picker" formControlName="dob">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field> -->
+                    </td>
+                    <td>
+                        <input type="number" class="form-control  form-control-sm" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Total">
+                        <!-- <mat-form-field>
+                  <input matInput type="text" formControlName="mobNumber">
+                </mat-form-field> -->
+                    </td>
+                    <td>
+                        <div class="container form-inline">
+                            <div class="col-sm-6"><i class="bi-check-circle" role="img" aria-label="check-circle"></i>
+                            </div>
+                            <div class="col-sm-6"><i class="bi-trash" role="img" aria-label="trash"></i></div>
+                        </div>
+                        <!-- <mat-icon class="delete" (click)="deleteRow(i)">delete_forever</mat-icon>
+                <mat-icon class="done" (click)="doneRow(group)">done</mat-icon> -->
+                    </td>
+                </tr>
+                <tr *ngIf="!group.get('isEditable').value">
+                    <td>
+                        {{group.get('name').value}}
+                    </td>
+                    <td>
+                        {{group.get('email').value}}
+                    </td>
+                    <td>
+                        {{group.get('email').value}}
+                    </td>
+                    <td>
+                        {{group.get('bloodGroup').value}}
+                    </td>
+                    <td>
+                        {{group.get('mobNumber').value}}
+                    </td>
+                    <td>
+                        <!-- <mat-icon class="edit" (click)="editRow(group)">edit</mat-icon> -->
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+    <i class="bi-alarm"></i>
+    <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
+    <i class="bi-github" role="img" aria-label="GitHub"></i>
+    <i class="bi-wifi" role="img" aria-label="wifi"></i>
+    <i class="bi-pencil-square" role="img" aria-label="pencil-square"></i>
+
+
+
+    <!-- <table id="cart" class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th style="width:50%">Product</th>
+                <th style="width:10%">Price</th>
+                <th style="width:8%">Quantity</th>
+                <th style="width:22%" class="text-center">Subtotal</th>
+                <th style="width:10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-th="Product">
+                    <div class="row">
+                        <div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..."
+                                class="img-responsive" /></div>
+                        <div class="col-sm-10">
+                            <h4 class="nomargin">Product 1</h4>
+                            <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Lorem ipsum dolor sit amet.</p>
+                        </div>
+                    </div>
+                </td>
+                <td data-th="Price">$1.99</td>
+                <td data-th="Quantity">
+                    <input type="number" class="form-control text-center" value="1">
+                </td>
+                <td data-th="Subtotal" class="text-center">1.99</td>
+                <td class="actions" data-th="">
+                    <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="visible-xs">
+                <td class="text-center"><strong>Total 1.99</strong></td>
+            </tr>
+            <tr>
+                <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+                <td colspan="2" class="hidden-xs"></td>
+                <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
+                <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+            </tr>
+        </tfoot>
+    </table> -->
+
+</form>

@@ -1,0 +1,18 @@
+<div>
+    <select name="" id="" (change)="onChange($event)">
+        <option value="todos">Todos</option>
+        <option value="españa">España</option>
+        <option value="reino unido">Reino Unido</option>
+        <option value="chile">Chile</option>
+        <option value="canadá">Canada</option>
+    </select>
+</div>
+<div>
+    <div class="escritor" *ngFor="let item of arrEscritores" [routerLink]="['/escritores',item.id]">
+
+        <h3>{{item.nombre}} {{item.apellidos}}</h3>
+        <img [src]="item.imagen" alt="">
+        <p>{{item.pais}}</p>
+
+    </div>
+</div>
