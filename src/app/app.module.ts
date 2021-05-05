@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http'
-import {NgbPaginationModule, NgbAlertModule,NgbDropdownModule,NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { NgbPaginationModule, NgbAlertModule, NgbDropdownModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +27,28 @@ import { ListInvoicesComponent } from './pages/list-invoices/list-invoices.compo
 import { CreateInvoiceComponent } from './pages/create-invoice/create-invoice.component';
 import { PageNotFoundComponent } from './layout/page-not-found/page-not-found.component';
 import { ListInvoicesOseComponent } from './pages/list-invoices-ose/list-invoices-ose.component';
+import { LoginComponent } from './auth/login/login.component';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { HomeComponent } from './pages/home/home.component';
+import { GoogleLoginProvider, FacebookLoginProvider, AuthServiceConfig } from 'angularx-social-login';
+import { SocialLoginModule } from 'angularx-social-login';
+
+export function getAuthServiceConfigs() {
+  let config = new AuthServiceConfig(
+    [
+      {
+        id: FacebookLoginProvider.PROVIDER_ID,
+        provider: new FacebookLoginProvider("916665709175701")
+      },
+      {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider("981626015364-s0otofiv4r6sf55dqker27o4cfeqs8ij.apps.googleusercontent.com")
+      },
+    ]
+  );
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -50,7 +72,9 @@ import { ListInvoicesOseComponent } from './pages/list-invoices-ose/list-invoice
     ListInvoicesComponent,
     CreateInvoiceComponent,
     PageNotFoundComponent,
-    ListInvoicesOseComponent
+    ListInvoicesOseComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -58,12 +82,38 @@ import { ListInvoicesOseComponent } from './pages/list-invoices-ose/list-invoice
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbPaginationModule, 
+    NgbPaginationModule,
     NgbAlertModule,
     NgbDatepickerModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {
+      provide: AuthServiceConfig,
+      useFactory: getAuthServiceConfigs
+    }
+    // {
+    //   provide: 'SocialAuthServiceConfig',
+    //   useValue: {
+    //     autoLogin: false,
+    //     providers: [
+    //       {
+    //         id: GoogleLoginProvider.PROVIDER_ID,
+    //         provider: new GoogleLoginProvider(
+    //           'clientId'
+    //         )
+    //       },
+    //       {
+    //         id: FacebookLoginProvider.PROVIDER_ID,
+    //         provider: new FacebookLoginProvider('916665709175701')
+    //       }
+    //     ]
+    //   } as SocialAuthServiceConfig,
+    // }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

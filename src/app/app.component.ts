@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+import { User } from './models/user.model';
+import { AuthenticationService } from './services/authentication.service';
 import { PostsService } from './services/posts.service';
 
 @Component({
@@ -10,11 +12,16 @@ import { PostsService } from './services/posts.service';
 })
 export class AppComponent {
   title = 'PointSales';
+  currentUser: User;
+  isUserLoggedIn: boolean;
 
   arrPost: any[];
 
-  constructor(private router: Router, private postsService: PostsService) {
-
+  constructor(private router: Router,
+    private postsService: PostsService,
+    private authenticationService: AuthenticationService) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x)
+    this.isUserLoggedIn = false;
   }
 
   ngOnInit() {
@@ -23,9 +30,9 @@ export class AppComponent {
     // this.postsService.getAll()
     //   .then(post => this.arrPost = post)
     //   .catch(error => console.log(error));
-
-                      //Toggle Click Function
-    $("#menu-toggle").click(function(e) {
+    this.validUser();
+    //Toggle Click Function
+    $("#menu-toggle").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
@@ -33,5 +40,17 @@ export class AppComponent {
 
   onClick(pRuta: string) {
     this.router.navigate([pRuta]);
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
+    this.validUser()
+  }
+
+  validUser() {
+    if (this.authenticationService.currentUserValue) {
+      this.isUserLoggedIn = true;
+    }
   }
 }

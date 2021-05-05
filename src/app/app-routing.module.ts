@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './auth/login/login.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -13,25 +14,28 @@ import { InfoComponent } from './components/info/info.component';
 import { ListaEscritoresComponent } from './components/lista-escritores/lista-escritores.component';
 import { ListarLibrosComponent } from './components/listar-libros/listar-libros.component';
 import { ModelComponent } from './forms/model/model.component';
-import { TemplateComponent } from './forms/template/template.component';
+import { AuthGuard } from './helpers/aut.guard';
 import { PageNotFoundComponent } from './layout/page-not-found/page-not-found.component';
 import { CreateInvoiceComponent } from './pages/create-invoice/create-invoice.component';
+import { HomeComponent } from './pages/home/home.component';
 import { ListInvoicesOseComponent } from './pages/list-invoices-ose/list-invoices-ose.component';
 import { ListInvoicesComponent } from './pages/list-invoices/list-invoices.component';
 import { RandomGuard } from './random.guard';
 
 
 const routes: Routes = [
-  { path: "", pathMatch: "full", component: DashboardComponent },
+  { path: "", pathMatch: "full", component: HomeComponent},
 
-  { path: "template", component: TemplateComponent },
-  { path: "model", component: ModelComponent },
-  { path: "dashboard", component: DashboardComponent },
-  { path: "invoices", component: ListInvoicesComponent },
-  { path: "invoices-ose", component: ListInvoicesOseComponent},
+  { path: "home", component: HomeComponent , canActivate: [AuthGuard], children:[
+
+  ]},
+  { path: "login", component: LoginComponent},
+  { path: "dashboard", component: DashboardComponent , canActivate: [AuthGuard] },
+  { path: "invoices", component: ListInvoicesComponent , canActivate: [AuthGuard] },
+  { path: "invoices-ose", component: ListInvoicesOseComponent, canActivate: [AuthGuard] },
   {
     path: "invoices/:documentType", component: CreateInvoiceComponent, children: [
-      { path: "create-invoice", component: CreateInvoiceComponent }
+      { path: "create-invoice", component: CreateInvoiceComponent , canActivate: [AuthGuard] }
     ]
   },
 

@@ -1,16 +1,13 @@
 <div class="d-flex" id="wrapper">
   <!-- Sidebar -->
- <app-sidebar></app-sidebar>
+  <app-sidebar [isUserLoggedIn]="isUserLoggedIn"></app-sidebar>
   <!-- /#sidebar-wrapper -->
   <!-- Page Content -->
-  <div id="page-content-wrapper">
-    <app-header></app-header>
-    <div class="container-fluid">
-      
-      <router-outlet></router-outlet>
-      
-    </div>
-  </div>
+  <!-- <app-header></app-header> -->
+  <!-- Page content -->    
+  <div class="main">
+      <router-outlet></router-outlet>     
+  </div>   
   <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->

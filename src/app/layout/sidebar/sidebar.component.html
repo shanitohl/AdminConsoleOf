@@ -1,4 +1,4 @@
-<div class="bg-light border-right" id="sidebar-wrapper">
+<!-- <div class="bg-light border-right" id="sidebar-wrapper">
   <div class="sidebar-heading">InnPath </div>
   <div class="list-group list-group-flush">
     <a [routerLink]="[ '/dashboard']" class="list-group-item list-group-item-action bg-light">Dashboard</a>
@@ -10,4 +10,21 @@
     <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
     <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
   </div>
-</div>
+</div> -->
+
+<div class="sidenav" *ngIf="isUserLoggedIn">
+  <a href="#about"> <h1>InnPath</h1></a>
+  <a [routerLink]="[ '/dashboard']"  href="#services">Dashboard</a>
+  <a [routerLink]="[ '/invoices']" href="#services">Invoices</a>
+  <a [routerLink]="[ '/invoices-ose']" href="#clients">Send Oses</a>
+  <a href="#contact">Contact</a>
+  <button class="dropdown-btn">Dropdown
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+  </div>
+  <a (click)="logout()">Logout</a>
+</div> 

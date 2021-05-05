@@ -1,1 +1,1 @@
-npm run build
+ng build --configuration=production
