@@ -24,18 +24,20 @@ import { RandomGuard } from './random.guard';
 
 
 const routes: Routes = [
-  { path: "", pathMatch: "full", component: HomeComponent},
+  { path: "", pathMatch: "full", component: HomeComponent },
 
-  { path: "home", component: HomeComponent , canActivate: [AuthGuard], children:[
+  {
+    path: "home", component: HomeComponent, canActivate: [AuthGuard], children: [
 
-  ]},
-  { path: "login", component: LoginComponent},
-  { path: "dashboard", component: DashboardComponent , canActivate: [AuthGuard] },
-  { path: "invoices", component: ListInvoicesComponent , canActivate: [AuthGuard] },
-  { path: "invoices-ose", component: ListInvoicesOseComponent, canActivate: [AuthGuard] },
+    ]
+  },
+  { path: "login", component: LoginComponent },
+  { path: "dashboard", component: DashboardComponent /*, canActivate: [AuthGuard]*/ },
+  { path: "invoices", component: ListInvoicesComponent /*, canActivate: [AuthGuard]*/ },
+  { path: "invoices-ose", component: ListInvoicesOseComponent/*, canActivate: [AuthGuard]*/ },
   {
     path: "invoices/:documentType", component: CreateInvoiceComponent, children: [
-      { path: "create-invoice", component: CreateInvoiceComponent , canActivate: [AuthGuard] }
+      { path: "create-invoice", component: CreateInvoiceComponent, canActivate: [AuthGuard] }
     ]
   },
 

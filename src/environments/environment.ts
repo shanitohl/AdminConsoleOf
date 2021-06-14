@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl:"http://localhost:22447/api/"
+  // baseUrl: "http://localhost:22447/api/"
+  baseUrl: "https://eavesdrop.ddns.net:9095/api/"
 };
 
 /*
